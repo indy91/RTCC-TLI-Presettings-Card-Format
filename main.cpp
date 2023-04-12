@@ -35,13 +35,13 @@ int main()
 	//INPUT PARAMETERS:
 
 	//Day in year
-	int LaunchDay = 207;
+	int LaunchDay = 342;
 	//Input file name of scenario with LVDC data
-	char FileNameIn[] = "Apollo 15 - Launch.scn";
+	char FileNameIn[] = "Apollo 17 - Launch.scn";
 	//Output file name of RTCC TLI parameters file, goes into \Config\ProjectApollo\RTCC
 	//Contains punch card format from MSC internal note 69-FM-171
 	//https://web.archive.org/web/20100524010957/http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19740072570_1974072570.pdf
-	char FileNameOut[] = "1971-07-26 TLI.txt";
+	char FileNameOut[] = "1972-12-07 TLI.txt";
 
 
 	char OppChar;
@@ -66,7 +66,7 @@ int main()
 	{
 		//Card 1, 24
 		SearchForDoubleOpp(in, "LVDC_TP", OppChar, 0, val3, -1.0);
-		SearchForDoubleOpp(in, "LVDC_CCS", OppChar, 0, val4, -1.0);
+		SearchForDoubleOpp(in, "LVDC_COS", OppChar, 0, val4, -1.0);
 		snprintf(Buffer, 128, "%d %d %.3lf %.7lf", LaunchDay, opp, val3, val4);
 		out << Buffer << "\n";
 		//Card 2, 25
@@ -81,7 +81,7 @@ int main()
 		{
 			//Card 3, 6...
 			SearchForDoubleOpp(in, "LVDC_TP", OppChar, 2 * i + 1, val1, 1000.0);
-			SearchForDoubleOpp(in, "LVDC_CCS", OppChar, 2 * i + 1, val2, 0.0);
+			SearchForDoubleOpp(in, "LVDC_COS", OppChar, 2 * i + 1, val2, 0.0);
 			SearchForDoubleOpp(in, "LVDC_C3", OppChar, 2 * i + 1, val3, 0.0);
 			SearchForDoubleOpp(in, "LVDC_EN", OppChar, 2 * i + 1, val4, 0.0);
 			snprintf(Buffer, 128, "%.3lf %.7lf %.1lf %.7lf", val1, val2, val3, val4);
@@ -90,7 +90,7 @@ int main()
 			SearchForDoubleOpp(in, "LVDC_RAS", OppChar, 2 * i + 1, val1, 0.0);
 			SearchForDoubleOpp(in, "LVDC_DEC", OppChar, 2 * i + 1, val2, 0.0);
 			SearchForDoubleOpp(in, "LVDC_TP", OppChar, 2 * i + 2, val3, 1000.0);
-			SearchForDoubleOpp(in, "LVDC_CCS", OppChar, 2 * i + 2, val4, 0.0);
+			SearchForDoubleOpp(in, "LVDC_COS", OppChar, 2 * i + 2, val4, 0.0);
 			snprintf(Buffer, 128, "%.7lf %.7lf %.3lf %.7lf", val1, val2, val3, val4);
 			out << Buffer << "\n";
 			//Card 5, 8...
@@ -161,7 +161,7 @@ int main()
 
 	//Card 541
 	SearchForDouble(in, "LVDC_T_LO", val2, 0.0);
-	SearchForDouble(in, "LVDC_TETEO", val3, 0.0);
+	SearchForDouble(in, "LVDC_THTEO", val3, 0.0);
 	SearchForDouble(in, "LVDC_omega_E", val4, 7.292107788e-5);
 	snprintf(Buffer, 128, "%d %.3lf %.10lf %.15lf", LaunchDay, val2 + 17.0, val3, val4*3600.0);
 	out << Buffer << "\n";
