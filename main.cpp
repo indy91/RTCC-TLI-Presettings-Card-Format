@@ -47,26 +47,70 @@ const double DT_GRR = 17.0;
 
 int main()
 {
-	//INPUT PARAMETERS:
-	int ApolloNo = 10;
-
-	//Day in year
-	std::vector<int> LaunchDayArr;
-	//Year
-	int Year;
-	//Input file names of scenarios with LVDC data
-	std::vector<std::string> FileNameInArr;
+	//Input file name
+	std::string FileNameIn;
 	//Output file name of RTCC TLI parameters file, goes into \Config\ProjectApollo\RTCC
 	//Contains punch card format from MSC internal note 69-FM-171
 	//https://web.archive.org/web/20100524010957/http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19740072570_1974072570.pdf
-	char FileNameOut[128];
+	std::string FileNameOut;
+	//Year
+	int Year;
+	//Day
+	int LaunchDay;
+	//Day in year array
+	std::vector<int> LaunchDayArr;
+	//Input file names of scenarios with LVDC data
+	std::vector<std::string> FileNameInArr;
 
-	if (ApolloNo == 8)
+	//Read in file name
+	std::cout << "Scenario file name:" << std::endl;
+	std::cin >> FileNameIn;
+	//Read in launch year
+	std::cout << "Year of launch:" << std::endl;
+	std::cin >> Year;
+	//Read in launch day
+	std::cout << "Day in year of launch:" << std::endl;
+	std::cin >> LaunchDay;
+	//Read in output file
+	std::cout << "Output file name:" << std::endl;
+	std::cin.ignore();
+	std::getline(std::cin, FileNameOut);
+
+	//Populate vectors
+	LaunchDayArr.push_back(LaunchDay);
+	FileNameInArr.push_back(FileNameIn);
+
+	/*
+	//INPUT PARAMETERS:
+	int ApolloNo = 0; // 0 = Custom
+
+	if (ApolloNo == 0)
+	{
+		LaunchDayArr.push_back(257);
+		Year = 1977;
+		FileNameInArr.push_back("Custom.txt");
+		snprintf(FileNameOut, 127, "Custom TLI.txt");
+	}
+	else if (ApolloNo == 3)
+	{
+		LaunchDayArr.push_back(15);
+		Year = 1969;
+		FileNameInArr.push_back("Apollo 3 - Launch.scn");
+		snprintf(FileNameOut, 127, "Apollo 3 TLI.txt");
+	}
+	else if (ApolloNo == 8)
 	{
 		LaunchDayArr.push_back(356);
 		Year = 1968;
 		FileNameInArr.push_back("Apollo 8 - Launch.scn");
 		snprintf(FileNameOut, 127, "Apollo 8 TLI.txt");
+	}
+	else if (ApolloNo == 9)
+	{
+		LaunchDayArr.push_back(62);
+		Year = 1969;
+		FileNameInArr.push_back("Apollo 9 - Launch.scn");
+		snprintf(FileNameOut, 127, "Apollo 9 TLI.txt");
 	}
 	else if (ApolloNo == 10)
 	{
@@ -126,6 +170,7 @@ int main()
 		snprintf(FileNameOut, 127, "Apollo 17 TLI.txt");
 	}
 	else return 0;
+	*/
 
 	std::ofstream out;
 
@@ -140,6 +185,7 @@ int main()
 
 	out.close();
 
+	std::cout << "File " << FileNameOut << " generated!" << std::endl;
 	return 0;
 }
 
@@ -160,7 +206,12 @@ void ReadSection1(const std::vector<std::string> &FileNameInArr, const std::vect
 	for (i = 0; i < FileNameInArr.size(); i++)
 	{
 		in.open(FileNameInArr[i]);
-		if (in.is_open() == false) continue;
+		if (in.is_open() == false)
+		{
+			std::cout << "File " << FileNameInArr[i] << " not found!" << std::endl;
+			continue;
+		}
+		std::cout << "Process file " << FileNameInArr[i] << std::endl;
 
 		LaunchDay = LaunchDayArr[i];
 
@@ -562,7 +613,7 @@ void ReadSection3(const std::vector<std::string> &FileNameInArr, const std::vect
 		SearchForDouble(in, "LVDC_t_DS1", val1, 10984.2);
 		SearchForDouble(in, "LVDC_t_DS2", val2, 16503.1);
 		SearchForDouble(in, "LVDC_t_DS3", val3, 0.0);
-		SearchForDouble(in, "LVDC_hx[0][0]", val4, 0.0);
+		SearchForDouble(in, "LVDC_hx[0][0]", val4, 72.0);
 
 
 		snprintf(Buffer, 17, "%.8E", val1 / HRS);
@@ -618,7 +669,7 @@ void ReadSection3(const std::vector<std::string> &FileNameInArr, const std::vect
 		//Card 545
 		SearchForDouble(in, "LVDC_t_D1", val1, 0.0);
 		SearchForDouble(in, "LVDC_t_SD1", val2, 10984.2);
-		SearchForDouble(in, "LVDC_hx[1][0]", val3, 0.0);
+		SearchForDouble(in, "LVDC_hx[1][0]", val3, 72.0);
 		SearchForDouble(in, "LVDC_hx[1][1]", val4, 0.0);
 
 		snprintf(Buffer, 17, "%.8E", val1 / HRS);
@@ -673,7 +724,7 @@ void ReadSection3(const std::vector<std::string> &FileNameInArr, const std::vect
 
 		//Card 547
 		SearchForDouble(in, "LVDC_t_SD2", val1, 5518.9);
-		SearchForDouble(in, "LVDC_hx[2][0]", val2, 0.0);
+		SearchForDouble(in, "LVDC_hx[2][0]", val2, 72.0);
 		SearchForDouble(in, "LVDC_hx[2][1]", val3, 0.0);
 		SearchForDouble(in, "LVDC_hx[2][2]", val4, 0.0);
 
