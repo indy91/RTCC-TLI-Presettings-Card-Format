@@ -280,9 +280,9 @@ void ReadSection1(const std::vector<std::string> &FileNameInArr, const std::vect
 			{
 				//Card 3, 6...
 				SearchForDoubleOpp(in, "LVDC_TP", OppChar, 2 * k + 1, val1, 1000.0);
-				SearchForDoubleOpp(in, "LVDC_COS", OppChar, 2 * k + 1, val2, 0.0);
-				SearchForDoubleOpp(in, "LVDC_C3", OppChar, 2 * k + 1, val3, 0.0);
-				SearchForDoubleOpp(in, "LVDC_EN", OppChar, 2 * k + 1, val4, 0.0);
+				SearchForDoubleOpp(in, "LVDC_COS", OppChar, 2 * k + 1, val2, 9.958662e-1);
+				SearchForDoubleOpp(in, "LVDC_C3", OppChar, 2 * k + 1, val3, -1.418676e6);
+				SearchForDoubleOpp(in, "LVDC_EN", OppChar, 2 * k + 1, val4, 0.9765500);
 
 				snprintf(Buffer, 17, "%.8E", val1 / HRS);
 				tempstr.assign(Buffer);
@@ -307,10 +307,10 @@ void ReadSection1(const std::vector<std::string> &FileNameInArr, const std::vect
 				cardnum++;
 
 				//Card 4, 7...
-				SearchForDoubleOpp(in, "LVDC_RAS", OppChar, 2 * k + 1, val1, 0.0);
-				SearchForDoubleOpp(in, "LVDC_DEC", OppChar, 2 * k + 1, val2, 0.0);
+				SearchForDoubleOpp(in, "LVDC_RAS", OppChar, 2 * k + 1, val1, -114.382494);
+				SearchForDoubleOpp(in, "LVDC_DEC", OppChar, 2 * k + 1, val2, -26.646912);
 				SearchForDoubleOpp(in, "LVDC_TP", OppChar, 2 * k + 2, val3, 1000.0);
-				SearchForDoubleOpp(in, "LVDC_COS", OppChar, 2 * k + 2, val4, 0.0);
+				SearchForDoubleOpp(in, "LVDC_COS", OppChar, 2 * k + 2, val4, 9.958662e-1);
 
 
 				snprintf(Buffer, 17, "%.8E", val1 * RAD);
@@ -336,10 +336,10 @@ void ReadSection1(const std::vector<std::string> &FileNameInArr, const std::vect
 				cardnum++;
 
 				//Card 5, 8...
-				SearchForDoubleOpp(in, "LVDC_C3", OppChar, 2 * k + 2, val1, 0.0);
-				SearchForDoubleOpp(in, "LVDC_EN", OppChar, 2 * k + 2, val2, 0.0);
-				SearchForDoubleOpp(in, "LVDC_RAS", OppChar, 2 * k + 2, val3, 0.0);
-				SearchForDoubleOpp(in, "LVDC_DEC", OppChar, 2 * k + 2, val4, 0.0);
+				SearchForDoubleOpp(in, "LVDC_C3", OppChar, 2 * k + 2, val1, -1.418676e6);
+				SearchForDoubleOpp(in, "LVDC_EN", OppChar, 2 * k + 2, val2, 0.9765500);
+				SearchForDoubleOpp(in, "LVDC_RAS", OppChar, 2 * k + 2, val3, -114.382494);
+				SearchForDoubleOpp(in, "LVDC_DEC", OppChar, 2 * k + 2, val4, -26.646912);
 
 				snprintf(Buffer, 17, "%.8E", val1 / ER2HR2ToM2SEC2);
 				tempstr.assign(Buffer);
@@ -428,7 +428,7 @@ void ReadSection2(const std::vector<std::string> &FileNameInArr, const std::vect
 			cardnum++;
 
 			//Card 462, 466
-			SearchForDoubleOpp2(in, "LVDC_ALFTS", OppChar, val1, 0.0);
+			SearchForDoubleOpp2(in, "LVDC_ALFTS", OppChar, val1, 14.2691472);
 			SearchForDoubleOpp2(in, "LVDC_F", OppChar, val2, 14.26968);
 			SearchForDoubleOpp2(in, "LVDC_RN", OppChar, val3, 6575100.0);
 			SearchForDoubleOpp2(in, "LVDC_T3PR", OppChar, val4, 310.8243);
@@ -456,14 +456,21 @@ void ReadSection2(const std::vector<std::string> &FileNameInArr, const std::vect
 			cardnum++;
 
 			//Card 463, 467
-			SearchForDoubleOpp2(in, "LVDC_TAU3R", OppChar, val1, 0.0);
 			if (opp == 1)
 			{
-				SearchForDouble(in, "LVDC_T2IR", val2, 0.0);
+				SearchForDoubleOpp2(in, "LVDC_TAU3R", OppChar, val1, 684.5038);
 			}
 			else
 			{
-				SearchForDoubleOpp2(in, "LVDC_T2IR", OppChar, val2, 0.0);
+				SearchForDoubleOpp2(in, "LVDC_TAU3R", OppChar, val1, 682.1127);
+			}
+			if (opp == 1)
+			{
+				SearchForDouble(in, "LVDC_T2IR", val2, 10.0);
+			}
+			else
+			{
+				SearchForDoubleOpp2(in, "LVDC_T2IR", OppChar, val2, 10.0);
 			}
 
 			SearchForDouble(in, "LVDC_V_ex2R", val3, 4221.827032);
